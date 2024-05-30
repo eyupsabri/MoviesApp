@@ -1,5 +1,8 @@
 using Entities;
 using Microsoft.EntityFrameworkCore;
+using Business;
+using Business.Services;
+using DAL;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +17,9 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseLazyLoadingProxies();
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+builder.Services.AddScoped<IMoviesRepository, MoviesRepository>();
+builder.Services.AddScoped<IMoviesService, MoviesService>();
+builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
 var app = builder.Build();
 
