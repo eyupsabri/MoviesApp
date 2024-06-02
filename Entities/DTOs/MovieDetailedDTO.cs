@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Entities.Enums.DBEnums;
 
 namespace Entities.DTOs
 {
-    public class MovieDTO
+    public class MovieDetailedDTO
     {
         public string Id { get; set; }
 
@@ -19,5 +20,9 @@ namespace Entities.DTOs
         public string ImageURL { get; set; }
         public string BannerURL { get; set; }
         public string Plot { get; set; }
+        public int MovieLength { get; set; }
+
+        public ICollection<MovieReviewDTO>? Reviews { get; set; }
+        public ICollection<string> MovieCategories { get; set; }
     }
 }

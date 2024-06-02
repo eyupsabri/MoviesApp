@@ -10,5 +10,6 @@ namespace DAL
     public interface IMoviesRepository
     {
         public IQueryable<Movie> GetMovies();
+        public Task<Movie> GetMovieById(string id);
     }
 }

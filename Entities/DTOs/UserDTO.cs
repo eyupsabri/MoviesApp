@@ -4,18 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Entities
+namespace Entities.DTOs
 {
-    public class User
+    public class UserDTO
     {
-        public int Id { get; set; }
         public string Name { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
         public string? NickName { get; set; }
-        public DateTime? BirthDate { get; set; }
-
-        public virtual ICollection<MovieReview>? MovieReviews { get; set; }
-        public virtual ICollection<UserReview>? UserReviews { get; set; }
+        public DateTime BirthDate { get; set; }
     }
 }

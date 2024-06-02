@@ -1,5 +1,6 @@
 ﻿using Business.Filter;
 using Entities;
+using Entities.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,5 +12,6 @@ namespace Business.Services
     public interface IMoviesService
     {
         public ICollection<Movie> GetMovies(MoviesFilter filter);
+        public Task<Movie> GetMovieById(string id);
     }
 }

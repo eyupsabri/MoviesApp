@@ -37,7 +37,6 @@ namespace Entities.Enums
             RealityTV,
             News,
             Adult
-
         }
     }
 }

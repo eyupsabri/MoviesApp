@@ -11,6 +11,7 @@
         public string TrailerURL { get; set; }
         public string ImageURL { get; set; }
         public string BannerURL { get; set; }
+        public int MovieLength { get; set; }
         public string Plot { get; set; }
         public virtual ICollection<MovieReview>? Reviews { get; set; }
         public virtual ICollection<MovieCategory> MovieCategories { get; set; }
