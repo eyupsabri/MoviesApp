@@ -4,15 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Entities.DTOs
+namespace Entities.Models
 {
-    public class MovieReviewDTO
+    public class MovieReviewModel
     {
-        public int Id { get; set; }
         public string Title { get; set; }
-        public string UserName { get; set; }
-        public string? UserNickName { get; set; }
-
+        public int? UserId { get; set; }
         public string MovieId { get; set; }
         public string Description { get; set; }
         public int Star { get; set; }

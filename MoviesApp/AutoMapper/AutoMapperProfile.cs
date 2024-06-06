@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Entities;
 using Entities.DTOs;
+using Entities.Models;
 
 namespace MoviesAppUser.AutoMapper
 {
@@ -17,7 +18,7 @@ namespace MoviesAppUser.AutoMapper
                 .ForMember(dest => dest.UserNickName, opt => opt.MapFrom(src => src.User.NickName));
             CreateMap<Movie, MovieDetailedDTO>()
                 .ForMember(dest => dest.MovieCategories, opt => opt.MapFrom(src => src.MovieCategories.Select(mc => mc.Category.MovieCategory.ToString())));
-
+            CreateMap<MovieReviewModel, MovieReview>();
 
         }
     }

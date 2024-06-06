@@ -28,5 +28,11 @@ namespace Business.Services
             else
                 return null;
         }
+
+        public async Task<User> GetUserByEmail(string email)
+        {
+            var user = await _userRepo.GetUserByEmail(email);
+            return user;
+        }
     }
 }

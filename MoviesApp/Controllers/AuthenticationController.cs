@@ -4,6 +4,8 @@ using Entities.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using MoviesAppUser.ActionFilter;
+using MoviesAppUser.Helpers;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -41,29 +43,63 @@ namespace MoviesAppUser.Controllers
             var user = await _userService.AuthenticateUser(login.Email, login.Password);
             if (user != null)
             {
-                var tokenString = GenerateJSONWebToken(user.Email);
-                response = Ok(new { token = tokenString });
+                var jwtIssuer = _config.GetSection("Jwt:Issuer").Get<string>();
+                var jwtKey = _config.GetSection("Jwt:Key").Get<string>();
+
+                var accessToken = TokenHelper.GenerateToken(user.Email, false, jwtKey, jwtIssuer);
+                var refreshToken = TokenHelper.GenerateToken(user.Email, true, jwtKey, jwtIssuer);
+                response = Ok(new { accessToken = accessToken, refreshToken = refreshToken });
             }
 
             return response;
         }
-        private string GenerateJSONWebToken(string email)
+
+        [HttpGet]
+        [ServiceFilter(typeof(MyAuthActionFilter))]
+        [Route("[action]")]
+        public IActionResult IsLoggedIn()
         {
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
-            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
-
-            var claims = new[] {
-                 new Claim(JwtRegisteredClaimNames.Email, email),
-            };
-
-            var token = new JwtSecurityToken(_config["Jwt:Issuer"],
-              _config["Jwt:Issuer"],
-              claims,
-              expires: DateTime.Now.AddMinutes(5),
-              signingCredentials: credentials);
-
-            return new JwtSecurityTokenHandler().WriteToken(token);
+            return Ok();
         }
+        [HttpGet]
+        [Route("[action]")]
+        public IActionResult RefreshToken(string token)
+        {
+            var jwtIssuer = _config.GetSection("Jwt:Issuer").Get<string>();
+            var jwtKey = _config.GetSection("Jwt:Key").Get<string>();
+            var response = TokenHelper.ValidateToken(token, jwtKey, jwtIssuer);
+            if (response.IsValidToken && !response.IsExpired && response.TokenType == "refresh")
+            {
+                var accessToken = TokenHelper.GenerateToken(response.Email, false, jwtKey, jwtIssuer);
+                var refreshToken = TokenHelper.GenerateToken(response.Email, true, jwtKey, jwtIssuer);
+                return Ok(new { accessToken = accessToken, refreshToken = refreshToken });
+            }
+            return Unauthorized();
+        }
+
+
+        //private string GenerateJSONWebToken(string email, bool isRefreshToken)
+        //{
+        //    var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
+        //    var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+
+        //    var tokenType = isRefreshToken ? "refresh" : "access";
+
+        //    var claims = new[] {
+        //        new Claim(JwtRegisteredClaimNames.Email, email),
+        //        new Claim("token_type", tokenType)
+        //    };
+
+
+
+        //    var token = new JwtSecurityToken(_config["Jwt:Issuer"],
+        //      _config["Jwt:Issuer"],
+        //      claims,
+        //      expires: isRefreshToken ? DateTime.Now.AddDays(30) : DateTime.Now.AddMinutes(1),
+        //      signingCredentials: credentials);
+
+        //    return new JwtSecurityTokenHandler().WriteToken(token);
+        //}
 
     }
 }

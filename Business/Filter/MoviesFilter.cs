@@ -16,6 +16,7 @@ namespace Business.Filter
     {
         public string? ID { get; set; }
         public int? imdbStar { get; set; }
+        public int? userRating { get; set; }
         public string? Title { get; set; }
         public YearOptions? Year { get; set; }
         public MovieCategoryOptions? genre { get; set; }
@@ -25,6 +26,8 @@ namespace Business.Filter
                 list = list.Where(m => m.Title.Contains(Title));
             if (imdbStar.HasValue)
                 list = list.Where(m => m.IMDBstar >= imdbStar);
+            if (userRating.HasValue)
+                list = list.Where(m => m.Reviews.Any(r => r.Star >= userRating));
             if (Year.HasValue)
             {
                 switch (Year)

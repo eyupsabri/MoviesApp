@@ -36,6 +36,7 @@ namespace MoviesAppUser.Controllers
         public async Task<IActionResult> GetMovie(string movieID)
         {
             var movie = await _moviesService.GetMovieById(movieID);
+
             var mapped = _autoMapper.Map<MovieDetailedDTO>(movie);
             return Ok(mapped);
 

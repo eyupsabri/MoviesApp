@@ -216,7 +216,8 @@ namespace Entities
                     MovieId = "tt0218839",
                     Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus tincidunt molestie massa quis vulputate. Pellentesque mollis egestas lectus, in tempus lorem scelerisque vitae. Donec fermentum quam nec ligula sollicitudin, quis tincidunt orci laoreet. Donec ut tincidunt tortor. Integer eget neque pellentesque risus varius gravida ac sit amet augue. Morbi tristique risus nec augue venenatis, id viverra dolor lobortis. Curabitur malesuada enim libero, nec tincidunt sem varius at. Proin id auctor magna, in pellentesque quam. In hac habitasse platea dictumst. Donec suscipit rutrum risus. Maecenas tristique lorem et nisl ullamcorper, at iaculis nisl laoreet. Etiam sed gravida felis, quis fringilla nisi. Maecenas in urna dolor. Nullam tincidunt varius vestibulum.",
                     Star = 10,
-                    Created = new DateTime(2024, 6, 1)
+                    Created = new DateTime(2024, 6, 1),
+                    IsDeleted = false,
                 }
             );
 

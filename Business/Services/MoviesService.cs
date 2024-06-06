@@ -32,6 +32,7 @@ namespace Business.Services
         public async Task<Movie> GetMovieById(string id)
         {
             var movie = await _moviesRepo.GetMovieById(id);
+            movie.Reviews = movie.Reviews.Where(r => !r.IsDeleted).ToList();
             return movie;
         }
     }
