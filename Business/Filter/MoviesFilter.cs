@@ -27,7 +27,11 @@ namespace Business.Filter
             if (imdbStar.HasValue)
                 list = list.Where(m => m.IMDBstar >= imdbStar);
             if (userRating.HasValue)
-                list = list.Where(m => m.Reviews.Any(r => r.Star >= userRating));
+            {
+                list = list.Where(m => m.Reviews
+                      .Where(r => !r.IsDeleted)
+                      .Average(r => (double)r.Star) >= userRating);
+            }
             if (Year.HasValue)
             {
                 switch (Year)
