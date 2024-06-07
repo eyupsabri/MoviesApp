@@ -13,5 +13,6 @@ namespace Entities.DTOs
         public string Password { get; set; }
         public string? NickName { get; set; }
         public DateTime BirthDate { get; set; }
+        public bool IsAdmin { get; set; }
     }
 }

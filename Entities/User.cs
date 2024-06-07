@@ -14,7 +14,7 @@ namespace Entities
         public string Password { get; set; }
         public string? NickName { get; set; }
         public DateTime? BirthDate { get; set; }
-
+        public bool IsAdmin { get; set; }
         public virtual ICollection<MovieReview>? MovieReviews { get; set; }
         public virtual ICollection<UserReview>? UserReviews { get; set; }
     }

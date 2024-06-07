@@ -48,7 +48,8 @@ namespace MoviesAppUser.Controllers
 
                 var accessToken = TokenHelper.GenerateToken(user.Email, false, jwtKey, jwtIssuer);
                 var refreshToken = TokenHelper.GenerateToken(user.Email, true, jwtKey, jwtIssuer);
-                response = Ok(new { accessToken = accessToken, refreshToken = refreshToken });
+                var isAdmin = user.IsAdmin;
+                response = Ok(new { accessToken = accessToken, refreshToken = refreshToken, isAdmin = isAdmin });
             }
 
             return response;
@@ -57,13 +58,26 @@ namespace MoviesAppUser.Controllers
         [HttpGet]
         [ServiceFilter(typeof(MyAuthActionFilter))]
         [Route("[action]")]
-        public IActionResult IsLoggedIn()
+        public async Task<IActionResult> IsLoggedIn()
         {
-            return Ok();
+            if (HttpContext.Items.ContainsKey("Email"))
+            {
+                // Retrieve the email from HttpContext.Items
+                var email = HttpContext.Items["Email"] as string;
+
+                // Use the email as needed
+                if (!string.IsNullOrEmpty(email))
+                {
+                    var user = await _userService.GetUserByEmail(email);
+                    var isAdmin = user.IsAdmin;
+                    return Ok(new { isAdmin = isAdmin });
+                }
+            }
+            return BadRequest();
         }
         [HttpGet]
         [Route("[action]")]
-        public IActionResult RefreshToken(string token)
+        public async Task<IActionResult> RefreshToken(string token)
         {
             var jwtIssuer = _config.GetSection("Jwt:Issuer").Get<string>();
             var jwtKey = _config.GetSection("Jwt:Key").Get<string>();
@@ -72,7 +86,9 @@ namespace MoviesAppUser.Controllers
             {
                 var accessToken = TokenHelper.GenerateToken(response.Email, false, jwtKey, jwtIssuer);
                 var refreshToken = TokenHelper.GenerateToken(response.Email, true, jwtKey, jwtIssuer);
-                return Ok(new { accessToken = accessToken, refreshToken = refreshToken });
+                var user = await _userService.GetUserByEmail(response.Email);
+                var isAdmin = user.IsAdmin; 
+                return Ok(new { accessToken = accessToken, refreshToken = refreshToken, isAdmin = isAdmin });
             }
             return Unauthorized();
         }
