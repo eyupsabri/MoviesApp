@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Business.Filter;
+using Business.PagedList;
 using Business.Services;
 using Entities;
 using Entities.DTOs;
@@ -23,12 +24,15 @@ namespace MoviesAppUser.Controllers
 
         [HttpGet]
         [ProducesResponseType(200, Type = typeof(List<MovieDTO>))]
-        public async Task<IActionResult> GetMovies([FromQuery] MoviesFilter filter)
+        public async Task<IActionResult> GetMovies([FromQuery] MoviesFilter filter, int pageIndex = 0)
         {
-            ICollection<Movie> movies = _moviesService.GetMovies(filter).ToList();
-            var mapped = movies.Select(m => _autoMapper.Map<MovieDTO>(m));
+            IQueryable<Movie> movies = _moviesService.GetMovies(filter);
+            PagedList<Movie> list = new PagedList<Movie>(pageIndex);
+            list.ToPagedList(movies);
+            var mapped = list.FinalList.Select(m => _autoMapper.Map<MovieDTO>(m));
+            
 
-            return Ok(mapped);
+            return Ok(new {movies = mapped, pageIndex = list.PageIndex, pageCount = list.PageCount});
         }
 
         [HttpGet]

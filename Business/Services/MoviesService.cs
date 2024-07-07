@@ -22,11 +22,11 @@ namespace Business.Services
 
 
 
-        public ICollection<Movie> GetMovies(MoviesFilter filter)
+        public IQueryable<Movie> GetMovies(MoviesFilter filter)
         {
             var movies = _moviesRepo.GetMovies().FilterAndSort(filter);
 
-            return movies.ToList();
+            return movies;
         }
 
         public async Task<Movie> GetMovieById(string id)
@@ -34,6 +34,12 @@ namespace Business.Services
             var movie = await _moviesRepo.GetMovieById(id);
             movie.Reviews = movie.Reviews.Where(r => !r.IsDeleted).ToList();
             return movie;
+        }
+
+        public async Task<bool> AddMovie(Movie movie)
+        {
+            var result = await _moviesRepo.AddMovie(movie);
+            return result;
         }
     }
 }

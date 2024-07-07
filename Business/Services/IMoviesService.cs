@@ -11,7 +11,9 @@ namespace Business.Services
 {
     public interface IMoviesService
     {
-        public ICollection<Movie> GetMovies(MoviesFilter filter);
+        public IQueryable<Movie> GetMovies(MoviesFilter filter);
         public Task<Movie> GetMovieById(string id);
+
+        public Task<Boolean> AddMovie(Movie movie);
     }
 }

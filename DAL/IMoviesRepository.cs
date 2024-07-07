@@ -11,5 +11,6 @@ namespace DAL
     {
         public IQueryable<Movie> GetMovies();
         public Task<Movie> GetMovieById(string id);
+        public Task<Boolean> AddMovie(Movie movie);
     }
 }

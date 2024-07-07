@@ -19,6 +19,10 @@ namespace MoviesAppUser.AutoMapper
             CreateMap<Movie, MovieDetailedDTO>()
                 .ForMember(dest => dest.MovieCategories, opt => opt.MapFrom(src => src.MovieCategories.Select(mc => mc.Category.MovieCategory.ToString())));
             CreateMap<MovieReviewModel, MovieReview>();
+            CreateMap<MovieAddDTO, Movie>().AfterMap((src, dest, context) =>
+            {
+                dest.MovieCategories = (ICollection<MovieCategory>)context.Items["MovieCategories"];
+            }); ;
 
         }
     }
