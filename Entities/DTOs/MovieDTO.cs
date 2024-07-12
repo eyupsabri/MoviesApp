@@ -19,5 +19,6 @@ namespace Entities.DTOs
         public string ImageURL { get; set; }
         public string BannerURL { get; set; }
         public string Plot { get; set; }
+        public ICollection<string> MovieCategories { get; set; }
     }
 }

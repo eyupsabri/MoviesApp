@@ -9,7 +9,8 @@ namespace MoviesAppUser.AutoMapper
     {
         public AutoMapperProfile()
         {
-            CreateMap<Movie, MovieDTO>();
+            CreateMap<Movie, MovieDTO>()
+                .ForMember(dest => dest.MovieCategories, opt => opt.MapFrom(src => src.MovieCategories.Select(mc => mc.Category.MovieCategory.ToString())));
             CreateMap<Category, CategoryDTO>();
             CreateMap<MovieCategory, MovieCategoryDTO>();
             CreateMap<User, UserDTO>();
