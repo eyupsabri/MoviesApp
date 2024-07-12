@@ -43,9 +43,12 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddScoped<IMoviesRepository, MoviesRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IMovieReviewsRepository, MovieReviewsRepository>();
+builder.Services.AddScoped<ICategoriesRepository, CategoriesRepository>();
+
 builder.Services.AddScoped<IMoviesService, MoviesService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IMovieReviewsService, MovieReviewsService>();
+builder.Services.AddScoped<ICategoriesService, CategoriesService>();
 
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
