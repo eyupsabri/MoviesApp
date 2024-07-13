@@ -1,5 +1,7 @@
-﻿using DAL;
+﻿using AutoMapper;
+using DAL;
 using Entities;
+using Entities.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,10 +13,12 @@ namespace Business.Services
     public class UserService : IUserService
     {
         private readonly IUserRepository _userRepo;
+        private readonly IMapper _mapper;
 
-        public UserService(IUserRepository userRepo)
+        public UserService(IUserRepository userRepo, IMapper mapper)
         {
             _userRepo = userRepo;
+            _mapper = mapper;
         }
 
         public async Task<User> AuthenticateUser(string email, string password)
@@ -33,6 +37,13 @@ namespace Business.Services
         {
             var user = await _userRepo.GetUserByEmail(email);
             return user;
+        }
+
+        public async Task<bool> RegisterUser(UserModel user)
+        {
+            var entity = _mapper.Map<User>(user);
+            var result = await _userRepo.RegisterUser(entity);
+            return result;
         }
     }
 }

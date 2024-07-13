@@ -21,5 +21,12 @@ namespace DAL
         {
             return await _db.Users.FirstOrDefaultAsync(u => u.Email == email);
         }
+
+        public async Task<bool> RegisterUser(User user)
+        {
+            _db.Users.Add(user);
+            var result = await _db.SaveChangesAsync();
+            return result > 0;
+        }
     }
 }

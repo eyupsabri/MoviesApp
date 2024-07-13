@@ -38,12 +38,6 @@ namespace MoviesAppUser.Controllers
             return BadRequest();
 
         }
-        [HttpGet]
-        [Route("[action]")]
-        public IActionResult Deneme()
-        {
-            return Ok(new { date = new DateTime() });
-        }
 
     }
 }

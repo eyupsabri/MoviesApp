@@ -10,5 +10,6 @@ namespace DAL
     public interface IUserRepository
     {
         public Task<User> GetUserByEmail(string email);
+        public Task<bool> RegisterUser(User user);
     }
 }

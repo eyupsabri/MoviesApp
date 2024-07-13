@@ -1,4 +1,5 @@
 ﻿using Entities;
+using Entities.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,5 +12,6 @@ namespace Business.Services
     {
         public Task<User> AuthenticateUser(string email, string password);
         public Task<User> GetUserByEmail(string email);
+        public Task<bool> RegisterUser(UserModel user);
     }
 }

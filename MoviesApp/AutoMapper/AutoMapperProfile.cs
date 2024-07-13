@@ -23,8 +23,8 @@ namespace MoviesAppUser.AutoMapper
             CreateMap<MovieAddDTO, Movie>().AfterMap((src, dest, context) =>
             {
                 dest.MovieCategories = (ICollection<MovieCategory>)context.Items["MovieCategories"];
-            }); ;
-
+            });
+            CreateMap<UserRegisterModel, User>();
         }
     }
 }

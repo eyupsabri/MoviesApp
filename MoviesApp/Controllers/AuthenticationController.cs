@@ -93,29 +93,14 @@ namespace MoviesAppUser.Controllers
             return Unauthorized();
         }
 
+        [HttpPost]
+        [Route("[action]")]
+        public async Task<IActionResult> Register(UserRegisterModel model)
+        {
 
-        //private string GenerateJSONWebToken(string email, bool isRefreshToken)
-        //{
-        //    var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
-        //    var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
-
-        //    var tokenType = isRefreshToken ? "refresh" : "access";
-
-        //    var claims = new[] {
-        //        new Claim(JwtRegisteredClaimNames.Email, email),
-        //        new Claim("token_type", tokenType)
-        //    };
-
-
-
-        //    var token = new JwtSecurityToken(_config["Jwt:Issuer"],
-        //      _config["Jwt:Issuer"],
-        //      claims,
-        //      expires: isRefreshToken ? DateTime.Now.AddDays(30) : DateTime.Now.AddMinutes(1),
-        //      signingCredentials: credentials);
-
-        //    return new JwtSecurityTokenHandler().WriteToken(token);
-        //}
+            return Ok();
+        }
+    
 
     }
 }
