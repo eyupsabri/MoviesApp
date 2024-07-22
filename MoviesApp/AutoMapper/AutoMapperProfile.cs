@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Entities;
 using Entities.DTOs;
-using Entities.Models;
+using MoviesAppUser.Models;
 
 namespace MoviesAppUser.AutoMapper
 {

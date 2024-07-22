@@ -1,11 +1,14 @@
-﻿using Azure;
+﻿using AutoMapper;
+using Azure;
 using Business.Services;
-using Entities.Models;
+using Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using MoviesAppUser.ActionFilter;
 using MoviesAppUser.Helpers;
+using MoviesAppUser.Models;
+using MoviesAppUser.Validations;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -19,11 +22,13 @@ namespace MoviesAppUser.Controllers
 
         private IConfiguration _config;
         private IUserService _userService;
+        private IMapper _mapper;
 
-        public AuthenticationController(IConfiguration config, IUserService userService)
+        public AuthenticationController(IConfiguration config, IUserService userService, IMapper mapper)
         {
             _config = config;
             _userService = userService;
+            _mapper = mapper;
         }
 
         [AllowAnonymous]
@@ -87,7 +92,7 @@ namespace MoviesAppUser.Controllers
                 var accessToken = TokenHelper.GenerateToken(response.Email, false, jwtKey, jwtIssuer);
                 var refreshToken = TokenHelper.GenerateToken(response.Email, true, jwtKey, jwtIssuer);
                 var user = await _userService.GetUserByEmail(response.Email);
-                var isAdmin = user.IsAdmin; 
+                var isAdmin = user.IsAdmin;
                 return Ok(new { accessToken = accessToken, refreshToken = refreshToken, isAdmin = isAdmin });
             }
             return Unauthorized();
@@ -97,10 +102,18 @@ namespace MoviesAppUser.Controllers
         [Route("[action]")]
         public async Task<IActionResult> Register(UserRegisterModel model)
         {
+            var validator = new UserRegisterModelValidator();
+            var result = validator.Validate(model);
+            if (result.IsValid)
+            {
+                var entity = _mapper.Map<User>(model);
+                var response = await _userService.RegisterUser(entity);
+                if (!response) return BadRequest("Already have an account");
 
-            return Ok();
+            }
+            return BadRequest(result.Errors);
         }
-    
+
 
     }
 }

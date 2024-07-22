@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using MoviesAppUser.ActionFilter;
+using FluentValidation.AspNetCore;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,7 +33,10 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 builder.Services.AddSingleton(new MyAuthActionFilter(jwtKey, jwtIssuer));
 
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddFluentValidation(v =>
+{
+    v.RegisterValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+});
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

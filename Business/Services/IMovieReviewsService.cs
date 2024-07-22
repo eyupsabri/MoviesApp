@@ -1,4 +1,4 @@
-﻿using Entities.Models;
+﻿using Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +9,6 @@ namespace Business.Services
 {
     public interface IMovieReviewsService
     {
-        public Task<bool> AddMovieReview(MovieReviewModel review);
+        public Task<bool> AddMovieReview(MovieReview review);
     }
 }

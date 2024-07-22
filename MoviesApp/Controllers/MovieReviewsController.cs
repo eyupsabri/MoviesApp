@@ -1,9 +1,11 @@
-﻿using Business.Services;
-using Entities.Models;
+﻿using AutoMapper;
+using Business.Services;
+using Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MoviesAppUser.ActionFilter;
+using MoviesAppUser.Models;
 
 namespace MoviesAppUser.Controllers
 {
@@ -14,11 +16,14 @@ namespace MoviesAppUser.Controllers
     {
         private IMovieReviewsService _movieReviewsService;
         private IUserService _userService;
+        private readonly IMapper _mapper;
 
-        public MovieReviewsController(IMovieReviewsService movieReviewsService, IUserService userService)
+
+        public MovieReviewsController(IMovieReviewsService movieReviewsService, IUserService userService, IMapper mapper)
         {
             _movieReviewsService = movieReviewsService;
             _userService = userService;
+            _mapper = mapper;
         }
 
         [HttpPost]
@@ -31,7 +36,8 @@ namespace MoviesAppUser.Controllers
                 if (user != null)
                 {
                     model.UserId = user.Id;
-                    var result = await _movieReviewsService.AddMovieReview(model);
+                    var mappedReview = _mapper.Map<MovieReview>(model);
+                    var result = await _movieReviewsService.AddMovieReview(mappedReview);
                     return Ok();
                 }
             }
