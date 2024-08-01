@@ -110,6 +110,11 @@ namespace MoviesAppUser.Controllers
                 var response = await _userService.RegisterUser(entity);
                 if (!response) return BadRequest("Already have an account");
 
+                var jwtIssuer = _config.GetSection("Jwt:Issuer").Get<string>();
+                var jwtKey = _config.GetSection("Jwt:Key").Get<string>();
+                var accessToken = TokenHelper.GenerateToken(model.Email, false, jwtKey, jwtIssuer);
+                var refreshToken = TokenHelper.GenerateToken(model.Email, true, jwtKey, jwtIssuer);
+                return Ok(new { accessToken = accessToken, refreshToken = refreshToken, isAdmin = model.IsAdmin });
             }
             return BadRequest(result.Errors);
         }
