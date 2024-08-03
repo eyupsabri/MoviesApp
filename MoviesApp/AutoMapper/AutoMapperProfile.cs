@@ -16,6 +16,7 @@ namespace MoviesAppUser.AutoMapper
             CreateMap<User, UserDTO>();
             CreateMap<MovieReview, MovieReviewDTO>()
                 .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.User.Name))
+                .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.User.Id))
                 .ForMember(dest => dest.UserNickName, opt => opt.MapFrom(src => src.User.NickName));
             CreateMap<Movie, MovieDetailedDTO>()
                 .ForMember(dest => dest.MovieCategories, opt => opt.MapFrom(src => src.MovieCategories.Select(mc => mc.Category.MovieCategory.ToString())));
