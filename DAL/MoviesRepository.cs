@@ -28,6 +28,14 @@ namespace DAL
             return result > 0;
         }
 
+        public async Task<bool> DeleteMovie(string id)
+        {
+            var movie = await GetMovieById(id);
+            movie.IsDeleted = true;
+            var result = await _db.SaveChangesAsync();
+            return result > 0;
+        }
+
         public async Task<Movie> GetMovieById(string id)
         {
             return await _db.Movies.FirstOrDefaultAsync(Movie => Movie.Id == id);

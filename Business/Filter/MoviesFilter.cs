@@ -22,6 +22,7 @@ namespace Business.Filter
         public MovieCategoryOptions? genre { get; set; }
         public IQueryable<Movie> Filter(IQueryable<Movie> list)
         {
+            list = list.Where(m => m.IsDeleted == false);
             if (!Title.IsNullOrEmpty())
                 list = list.Where(m => m.Title.Contains(Title));
             if (imdbStar.HasValue)
@@ -37,21 +38,35 @@ namespace Business.Filter
                 switch (Year)
                 {
                     default:
-                        return list;
+
+                        break;
                     case YearOptions.From2020:
-                        return list = list.Where(m => m.Year >= 2020);
+                        list = list.Where(m => m.Year >= 2020);
+                        break;
                     case YearOptions.From2010To2019:
-                        return list = list.Where(m => m.Year >= 2010 && m.Year <= 2019);
+                        list = list.Where(m => m.Year >= 2010 && m.Year <= 2019);
+                        break;
+
                     case YearOptions.From2000To2009:
-                        return list = list.Where(m => m.Year >= 2000 && m.Year <= 2009);
+                        list = list.Where(m => m.Year >= 2000 && m.Year <= 2009);
+                        break;
+
                     case YearOptions.From1990To1999:
-                        return list = list.Where(m => m.Year >= 1990 && m.Year <= 1999);
+                        list = list.Where(m => m.Year >= 1990 && m.Year <= 1999);
+                        break;
+
                     case YearOptions.From1980To1989:
-                        return list = list.Where(m => m.Year >= 1980 && m.Year <= 1989);
+                        list = list.Where(m => m.Year >= 1980 && m.Year <= 1989);
+                        break;
+
                     case YearOptions.From1970To1979:
-                        return list = list.Where(m => m.Year >= 1970 && m.Year <= 1979);
+                        list = list.Where(m => m.Year >= 1970 && m.Year <= 1979);
+                        break;
+
                     case YearOptions.OlderThan1969:
-                        return list = list.Where(m => m.Year <= 1969);
+                        list = list.Where(m => m.Year <= 1969);
+                        break;
+
                 }
             }
             if (!ID.IsNullOrEmpty())

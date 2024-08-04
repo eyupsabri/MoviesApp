@@ -10,5 +10,6 @@ namespace DAL
     public interface IMovieReviewsRepository
     {
         public Task<bool> AddMovieReview(MovieReview review);
+        public Task<bool> DeleteReview(int id);
     }
 }

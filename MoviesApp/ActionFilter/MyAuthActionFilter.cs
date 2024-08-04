@@ -21,30 +21,13 @@ namespace MoviesAppUser.ActionFilter
         }
         public void OnActionExecuting(ActionExecutingContext context)
         {
-            //if (context.HttpContext.User.Identity is ClaimsIdentity identity)
-            //{
-            //    var emailClaim = identity.FindFirst(ClaimTypes.Email);
-            //    if (emailClaim != null)
-            //    {
-            //        context.HttpContext.Items["Email"] = emailClaim.Value;
-            //    }
-            //}
+
             var authorizationHeader = context.HttpContext.Request.Headers["Authorization"].FirstOrDefault();
             if (authorizationHeader != null && authorizationHeader.StartsWith("Bearer "))
             {
                 var token = authorizationHeader.Substring("Bearer ".Length).Trim();
 
-                //if (ValidateToken(token, out ClaimsPrincipal principal))
-                //{
-                //    var emailClaim = principal.FindFirst(ClaimTypes.Email);
-                //    var tokenTypeClaim = principal.FindFirst("token_type");
 
-                //    if (emailClaim != null && tokenTypeClaim?.Value == "access")
-                //    {
-                //        context.HttpContext.Items["Email"] = emailClaim.Value;
-                //        return;
-                //    }
-                //}
                 var response = TokenHelper.ValidateToken(token, _secretKey, _jwtIssuer);
                 if (!response.IsValidToken)
                 {

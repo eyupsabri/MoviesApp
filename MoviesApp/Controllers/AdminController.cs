@@ -13,7 +13,7 @@ namespace MoviesAppUser.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    
+
 
     public class AdminController : ControllerBase
     {
@@ -46,7 +46,7 @@ namespace MoviesAppUser.Controllers
             if (HttpContext.Items["Email"] is string email)
             {
                 var user = await _userService.GetUserByEmail(email);
-                if (user == null || !user.IsAdmin) return BadRequest(); 
+                if (user == null || !user.IsAdmin) return BadRequest();
             }
 
             List<MovieCategory> movieCategories = new List<MovieCategory>();
@@ -63,21 +63,37 @@ namespace MoviesAppUser.Controllers
             bool response;
             try
             {
-                 response = await _moviesService.AddMovie(movie);
+                response = await _moviesService.AddMovie(movie);
             }
             catch (Exception ex)
             {
                 message = ex.InnerException.Message;
                 response = false;
             }
-            
-   
+
+
             if (response)
                 return Ok();
-            else if(message.Contains("duplicate"))
-               return BadRequest("Movie already in database");
+            else if (message.Contains("duplicate"))
+                return BadRequest("Movie already in database");
             else return BadRequest();
 
+        }
+
+        [HttpDelete]
+        [Route("[action]/{id}")]
+        [ServiceFilter(typeof(MyAuthActionFilter))]
+        public async Task<IActionResult> DeleteMovie(string id)
+        {
+            //var movie = _autoMapper.Map<Movie>(movieToAdd);
+            if (HttpContext.Items["Email"] is string email)
+            {
+                var user = await _userService.GetUserByEmail(email);
+                if (user == null || !user.IsAdmin) return BadRequest();
+            }
+            var response = await _moviesService.DeleteMovie(id);
+            if (response) return Ok();
+            return BadRequest();
         }
     }
 }

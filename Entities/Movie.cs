@@ -9,6 +9,7 @@
         public string Description { get; set; }
         public string ContentRating { get; set; }
         public string TrailerURL { get; set; }
+        public bool IsDeleted { get; set; }
         public string ImageURL { get; set; }
         public string BannerURL { get; set; }
         public int MovieLength { get; set; }

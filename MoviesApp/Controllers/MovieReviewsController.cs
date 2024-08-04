@@ -44,6 +44,21 @@ namespace MoviesAppUser.Controllers
             return BadRequest();
 
         }
+        [HttpDelete]
+        [Route("[action]/{id}")]
+        public async Task<IActionResult> DeleteReview(int id)
+        {
+            if (HttpContext.Items["Email"] is string email)
+            {
+                var user = await _userService.GetUserByEmail(email);
+                if (user == null || !user.IsAdmin) return BadRequest();
+                var result = await _movieReviewsService.DeleteMovieReview(id);
+                if (result)
+                    return Ok();
+                return BadRequest();
+            }
+            return BadRequest();
+        }
 
     }
 }

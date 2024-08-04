@@ -41,5 +41,15 @@ namespace Business.Services
             var result = await _moviesRepo.AddMovie(movie);
             return result;
         }
+
+        public async Task<bool> DeleteMovie(string id)
+        {
+            var result = await _moviesRepo.DeleteMovie(id);
+
+            return result;
+
+        }
+
+
     }
 }

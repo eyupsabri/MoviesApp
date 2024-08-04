@@ -21,8 +21,14 @@ namespace Business.Services
 
         public async Task<bool> AddMovieReview(MovieReview review)
         {
-           // var mappedReview = _mapper.Map<MovieReview>(review);
+            // var mappedReview = _mapper.Map<MovieReview>(review);
             var result = await _repo.AddMovieReview(review);
+            return result;
+        }
+
+        public async Task<bool> DeleteMovieReview(int id)
+        {
+            var result = await _repo.DeleteReview(id);
             return result;
         }
     }

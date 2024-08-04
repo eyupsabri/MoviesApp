@@ -14,6 +14,7 @@ namespace Business.Services
         public IQueryable<Movie> GetMovies(MoviesFilter filter);
         public Task<Movie> GetMovieById(string id);
 
-        public Task<Boolean> AddMovie(Movie movie);
+        public Task<bool> AddMovie(Movie movie);
+        public Task<bool> DeleteMovie(string id);
     }
 }
