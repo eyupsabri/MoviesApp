@@ -69,8 +69,18 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseStaticFiles(); // This will serve the React static files
+
+app.UseRouting();
 
 
-app.MapControllers();
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllers();
+    endpoints.MapFallbackToFile("index.html"); // This will serve index.html for all unknown routes
+});
+
+
+//app.MapControllers();
 
 app.Run();
