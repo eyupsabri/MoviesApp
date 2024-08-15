@@ -48,8 +48,8 @@ namespace MoviesAppUser.Controllers
             var user = await _userService.AuthenticateUser(login.Email, login.Password);
             if (user != null)
             {
-                var jwtIssuer = _config.GetSection("Jwt:Issuer").Get<string>();
-                var jwtKey = _config.GetSection("Jwt:Key").Get<string>();
+                var jwtIssuer = _config.GetSection("JWT_ISSUER").Get<string>();
+                var jwtKey = _config.GetSection("JWT_KEY").Get<string>();
 
                 var accessToken = TokenHelper.GenerateToken(user.Email, false, jwtKey, jwtIssuer);
                 var refreshToken = TokenHelper.GenerateToken(user.Email, true, jwtKey, jwtIssuer);
@@ -84,8 +84,8 @@ namespace MoviesAppUser.Controllers
         [Route("[action]")]
         public async Task<IActionResult> RefreshToken(string token)
         {
-            var jwtIssuer = _config.GetSection("Jwt:Issuer").Get<string>();
-            var jwtKey = _config.GetSection("Jwt:Key").Get<string>();
+            var jwtIssuer = _config.GetSection("JWT_ISSUER").Get<string>();
+            var jwtKey = _config.GetSection("JWT_KEY").Get<string>();
             var response = TokenHelper.ValidateToken(token, jwtKey, jwtIssuer);
             if (response.IsValidToken && !response.IsExpired && response.TokenType == "refresh")
             {
@@ -110,8 +110,8 @@ namespace MoviesAppUser.Controllers
                 var response = await _userService.RegisterUser(entity);
                 if (!response) return BadRequest("Already have an account");
 
-                var jwtIssuer = _config.GetSection("Jwt:Issuer").Get<string>();
-                var jwtKey = _config.GetSection("Jwt:Key").Get<string>();
+                var jwtIssuer = _config.GetSection("JWT_ISSUER").Get<string>();
+                var jwtKey = _config.GetSection("JWT_KEY").Get<string>();
                 var accessToken = TokenHelper.GenerateToken(model.Email, false, jwtKey, jwtIssuer);
                 var refreshToken = TokenHelper.GenerateToken(model.Email, true, jwtKey, jwtIssuer);
                 return Ok(new { accessToken = accessToken, refreshToken = refreshToken, isAdmin = model.IsAdmin });

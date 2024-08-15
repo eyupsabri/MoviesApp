@@ -12,8 +12,10 @@ using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var jwtIssuer = builder.Configuration.GetSection("Jwt:Issuer").Get<string>();
-var jwtKey = builder.Configuration.GetSection("Jwt:Key").Get<string>();
+var jwtIssuer = builder.Configuration.GetSection("JWT_ISSUER").Get<string>();
+var jwtKey = builder.Configuration.GetSection("JWT_KEY").Get<string>();
+//var jwtKey = Environment.GetEnvironmentVariable("JWT_KEY");
+//var jwtIssuer = Environment.GetEnvironmentVariable("JWT_ISSUER");
 // Add services to the container.
 builder.Services.AddCors();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -39,7 +41,7 @@ builder.Services.AddControllers().AddFluentValidation(v =>
 });
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+//builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
     options.UseLazyLoadingProxies();
@@ -58,14 +60,21 @@ builder.Services.AddScoped<ICategoriesService, CategoriesService>();
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
 var app = builder.Build();
+
+//var service = (IServiceScopeFactory)app.Services.GetService(typeof(IServiceScopeFactory));
+//using (var db = service.CreateScope().ServiceProvider.GetService<AppDbContext>())
+//{
+//    db.Database.Migrate();
+//}
+
 app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:3000"));
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+//if (app.Environment.IsDevelopment())
+//{
+//    app.UseSwagger();
+//    app.UseSwaggerUI();
+//}
 
 app.UseHttpsRedirection();
 
