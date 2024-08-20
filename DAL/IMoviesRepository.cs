@@ -13,5 +13,7 @@ namespace DAL
         public Task<Movie> GetMovieById(string id);
         public Task<bool> AddMovie(Movie movie);
         public Task<bool> DeleteMovie(string id);
+
+        public Task<bool> SaveChanges();
     }
 }

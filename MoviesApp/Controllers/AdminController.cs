@@ -67,14 +67,14 @@ namespace MoviesAppUser.Controllers
             }
             catch (Exception ex)
             {
-                message = ex.InnerException.Message;
+                message = ex.Message;
                 response = false;
             }
 
 
             if (response)
                 return Ok();
-            else if (message.Contains("duplicate"))
+            else if (message.Contains("because another instance with the same key value"))
                 return BadRequest("Movie already in database");
             else return BadRequest();
 

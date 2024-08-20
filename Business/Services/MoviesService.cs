@@ -38,6 +38,15 @@ namespace Business.Services
 
         public async Task<bool> AddMovie(Movie movie)
         {
+            var isExist = await _moviesRepo.GetMovieById(movie.Id);
+
+            if (isExist != null && isExist.IsDeleted)
+            {
+                isExist.IsDeleted = false;
+                var response = await _moviesRepo.SaveChanges();
+                return response;
+            }
+
             var result = await _moviesRepo.AddMovie(movie);
             return result;
         }

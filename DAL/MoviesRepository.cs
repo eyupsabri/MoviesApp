@@ -22,18 +22,23 @@ namespace DAL
             _db.Movies.Add(movie);
 
 
-            var result = await _db.SaveChangesAsync();
+            var result = await SaveChanges();
 
 
-            return result > 0;
+            return result;
         }
 
         public async Task<bool> DeleteMovie(string id)
         {
             var movie = await GetMovieById(id);
             movie.IsDeleted = true;
-            var result = await _db.SaveChangesAsync();
-            return result > 0;
+
+            foreach (var r in movie.Reviews)
+            {
+                r.IsDeleted = true;
+            }
+            var result = await SaveChanges();
+            return result;
         }
 
         public async Task<Movie> GetMovieById(string id)
@@ -44,6 +49,12 @@ namespace DAL
         public IQueryable<Movie> GetMovies()
         {
             return _db.Movies;
+        }
+
+        public async Task<bool> SaveChanges()
+        {
+            var result = await _db.SaveChangesAsync();
+            return result > 0;
         }
     }
 }
