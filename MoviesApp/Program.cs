@@ -61,11 +61,11 @@ builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
 var app = builder.Build();
 
-var service = (IServiceScopeFactory)app.Services.GetService(typeof(IServiceScopeFactory));
-using (var db = service.CreateScope().ServiceProvider.GetService<AppDbContext>())
-{
-    db.Database.Migrate();
-}
+//var service = (IServiceScopeFactory)app.Services.GetService(typeof(IServiceScopeFactory));
+//using (var db = service.CreateScope().ServiceProvider.GetService<AppDbContext>())
+//{
+//    db.Database.Migrate();
+//}
 
 app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:3000"));
 
